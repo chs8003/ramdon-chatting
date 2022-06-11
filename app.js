@@ -5,16 +5,11 @@ var express =  require("express");
 
 var app =express();
 
-var bad = ["관리자","어드민","주인장","바보"];  //금지단어
-var ckc = [" ",".","-","/","*","[","]","=","#"];  //금지단어 사이에 입력되는 제거대상 문자  ex)관/리.자
-var position;
-
 const finding = 1;
 const notFinding = 2;
 const chating = 3;
  
 var clients = []; //사용자를 저장/관리 하는 배열. 이 배열의 길이가 사용자(채팅 접속자)의 수.
- 
 var server = http.createServer(function(request,response){
  
     //해당파일의 데이터를 읽고, 읽은 데이터를 클라이언트로 응답해줌.
@@ -91,26 +86,9 @@ io.sockets.on("connection",function(socket){
             }
         }
     });
- 
+
     socket.on("message",function(result){
         io.sockets.to(result.roomName).emit("message", result.data);
-
-        function filter(name){
-            for (i=0; i<ckc.length ; i++) {
-                position = name.indexOf(ckc[i]);
-                    while (position != -1){
-                     name = name.replace(ckc[i],"");
-                     position = name.indexOf(ckc[i]);
-                    }
-                }
-            
-                for (i=0; i<bad.length ; i++) {
-                if (name.match(bad[i])) {
-                 alert(bad[i]+"란 단어는 사용하실수 없습니다.");
-                 return;
-                    }
-                }
-            }
     });
  
     socket.on("chatClosingBtn",function(data){
@@ -142,3 +120,4 @@ io.sockets.on("connection",function(socket){
     });
 });
 module.exports = app;
+
