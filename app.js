@@ -15,7 +15,8 @@ const chating = 3;
 
 var clients = []; //사용자를 저장/관리 하는 배열. 이 배열의 길이가 사용자(채팅 접속자)의 수.
 var server = http.createServer(function(request,response){
-   
+    console.log("IP: ", requestIP.getClientIp(request));
+    let ip = requestIP.getClientIp(request);
 
     //해당파일의 데이터를 읽고, 읽은 데이터를 클라이언트로 응답해줌.
     fs.readFile("htmlPage.html","utf-8",function(error,data){
@@ -30,7 +31,7 @@ var server = http.createServer(function(request,response){
 
 (function () {
     function resp() {
-    var arrUserIP = ['아이피'];  // 차단할 아이피 입력
+    var arrUserIP = ['121.166.174.22'];  // 차단할 아이피 입력
     var json = JSON.parse(this.responseText);
     for (var i = 0; i < arrUserIP.length; i++) {
       if (arrUserIP[i] == json.ip) {
@@ -56,7 +57,6 @@ io.sockets.on("connection",function(socket){
     socket.on("nickNameCheck",function(data){
         if(!data.name){
             socket.emit("nullError","닉네임을 입력해주세요");
-           
 
             return ;
         }
