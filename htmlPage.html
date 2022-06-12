@@ -91,7 +91,7 @@
                 var obj_length = document.getElementsByName("hobby").length;
                 for (var i = 0; i < obj_length; i++) {
                     if (document.getElementsByName("hobby")[i].checked == true) {
-                $("#chat").html("").append(document.getElementsByName("hobby")[i].value + " 대화방에 입장했습니다!!</p><hr></li>");
+                $("#chat").html("").append( "대화방에 입장했습니다!!</p><hr></li>");
                 $("#sendMessage").show(); $("#closing").show();
                 $("#ramdomChatFindBtn").hide();
                 $("#hobby").hide();
@@ -128,12 +128,21 @@
                     return;
                 }
 
+                var obj_length = document.getElementsByName("hobby").length;
+                for (var i = 0; i < obj_length; i++) {
+                    if (document.getElementsByName("hobby")[i].checked == true) {
+                    
                 var str = "";
                 str += "<li>";
-                str += "<strong>" + nickName + "</strong>";
+                str += "<strong>"+ nickName + " " + "</strong>";
+                str += "(";
+                str += document.getElementsByName("hobby")[i].value;
+                str += ")";
                 str += "<p>" + content + "</p>";
                 str += "<hr>";
                 str += "</li>";
+                    }
+                }
 
                 socket.emit("message", { roomName: roomName, data: str });
                 $("#content").val("");
@@ -201,6 +210,7 @@
             <input type="text" name="nickname" class="form-control" maxlength="100" id="nickname"
                 placeholder="닉네임을 입력하세요..">
             <button class="btn btn-primary" onclick="enter()" id="nicknameBtn">확인</button>
+            
         </div>
     </div>
     <div class="container chatDisabled" id="chatBox">

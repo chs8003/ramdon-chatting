@@ -3,6 +3,8 @@ var fs = require("fs"); // 파일관련 처리를 하기 위한 모듈
 var socketIo = require("socket.io"); //소켓서버를 생성 및 실행하기위한 모듈
 var express =  require("express");
 var requestIP = require('request-ip')
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var xhr = new XMLHttpRequest();
 
 var app =express();
 
@@ -13,9 +15,8 @@ const chating = 3;
 
 var clients = []; //사용자를 저장/관리 하는 배열. 이 배열의 길이가 사용자(채팅 접속자)의 수.
 var server = http.createServer(function(request,response){
-    console.log("IP: ", requestIP.getClientIp(request));
-    let ip = requestIP.getClientIp(request);
- 
+   
+
     //해당파일의 데이터를 읽고, 읽은 데이터를 클라이언트로 응답해줌.
     fs.readFile("htmlPage.html","utf-8",function(error,data){
         response.writeHead(200,{
@@ -26,6 +27,26 @@ var server = http.createServer(function(request,response){
 }).listen(52273,function(){
     console.log("server running");
 }); //HTTP 웹서버를 생성
+
+(function () {
+    function resp() {
+    var arrUserIP = ['아이피'];  // 차단할 아이피 입력
+    var json = JSON.parse(this.responseText);
+    for (var i = 0; i < arrUserIP.length; i++) {
+      if (arrUserIP[i] == json.ip) {
+        // 차단할 아이피 접속 시 보여줄 메시지(특정 주소로만 보내려면 아래 줄 삭제)
+        alert("당신은 접속이 차단되었습니다.")
+        // 다른 곳으로 보낼 URL주소 입력
+        window.location.replace("http://error.com");
+      }
+    }
+  }
+  
+  var request = new XMLHttpRequest();
+  request.addEventListener("load", resp);
+  request.open("GET", 'https://api.ipify.org?format=json');
+  request.send();
+  }());
  
 var io = socketIo.listen(server); //소켓서버를 생성 및 실행
  
@@ -35,6 +56,8 @@ io.sockets.on("connection",function(socket){
     socket.on("nickNameCheck",function(data){
         if(!data.name){
             socket.emit("nullError","닉네임을 입력해주세요");
+           
+
             return ;
         }
  
