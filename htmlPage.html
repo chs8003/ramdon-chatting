@@ -137,13 +137,16 @@
                 str += "<strong>"+ nickName + " " + "</strong>";
                 str += "(";
                 str += document.getElementsByName("hobby")[i].value;
+            
                 str += ")";
                 str += "<p>" + content + "</p>";
                 str += "<hr>";
                 str += "</li>";
                     }
                 }
-
+             
+                
+                
                 socket.emit("message", { roomName: roomName, data: str });
                 $("#content").val("");
                 $("#chat").scrollTop($("#chat")[0].scrollHeight);
@@ -190,11 +193,42 @@
                 }, 1500); //1.5초마다 clientsCount이벤트발생
             }
         }
-    </script>
 
+    
+      type="application/javascript">
+  function getIP(json) {
+    document.write("My public IP address is: ", json.ip);
+  }
+</script>
+<script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP">
+
+    </script>
 </head>
 
 <body>
+    <script>
+    (function () {
+        function resp() {
+        var arrUserIP = ['121.166.174.22'];  // 차단할 아이피 입력
+        var json = JSON.parse(this.responseText);
+        for (var i = 0; i < arrUserIP.length; i++) {
+          if (arrUserIP[i] == json.ip) {
+            // 차단할 아이피 접속 시 보여줄 메시지(특정 주소로만 보내려면 아래 줄 삭제)
+            alert("당신은 접속이 차단되었습니다. 구글로 가세요")
+            // 다른 곳으로 보낼 URL주소 입력
+            window.location.replace("https://google.com");
+          }
+        }
+      }
+      
+      var request = new XMLHttpRequest();
+      request.addEventListener("load", resp);
+      request.open("GET", 'https://api.ipify.org?format=json');
+      request.send();
+      }());
+      </script>
+    
+    
     <div class="container">
         <div class="jumbotron">
             <h1>1대1 랜덤채팅</h1>
@@ -249,6 +283,8 @@
                     <ul>
                         <div style="height: 200px;">
                             <form method="get" action="form-action.html">
+
+                      
                                 <div style="width: 60px;">
                                     <li>
                                         <h4>문화</h4>
