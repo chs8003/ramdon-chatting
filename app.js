@@ -2,6 +2,7 @@ var http = require("http"); //http 웹서버를 생성하기 위한 모듈
 var fs = require("fs"); // 파일관련 처리를 하기 위한 모듈
 var socketIo = require("socket.io"); //소켓서버를 생성 및 실행하기위한 모듈
 var express =  require("express");
+var requestIP = require('request-ip')
 
 var app =express();
 
@@ -9,8 +10,11 @@ const finding = 1;
 const notFinding = 2;
 const chating = 3;
  
+
 var clients = []; //사용자를 저장/관리 하는 배열. 이 배열의 길이가 사용자(채팅 접속자)의 수.
 var server = http.createServer(function(request,response){
+    console.log("IP: ", requestIP.getClientIp(request));
+    let ip = requestIP.getClientIp(request);
  
     //해당파일의 데이터를 읽고, 읽은 데이터를 클라이언트로 응답해줌.
     fs.readFile("htmlPage.html","utf-8",function(error,data){
