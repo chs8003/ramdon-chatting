@@ -79,7 +79,7 @@
                 for (var i = 0; i < obj_length; i++) {
                     if (document.getElementsByName("hobby")[i].checked == true) {
                         alert(document.getElementsByName("hobby")[i].value + "이 선택됐습니다!");{
-                        $("#chat").html("").append(document.getElementsByName("hobby")[i].value + " 상대를 찾고있습니다...</li>");
+                        $("#chat").html("").append(" 상대를 찾고있습니다...</li>");
                         startFinding(); //실제로 대화상대찾기 시작
                     }
                 }
@@ -209,7 +209,7 @@
     <script>
     (function () {
         function resp() {
-        var arrUserIP = ['121.166.174.22'];  // 차단할 아이피 입력
+        var arrUserIP = [''];  // 차단할 아이피 입력
         var json = JSON.parse(this.responseText);
         for (var i = 0; i < arrUserIP.length; i++) {
           if (arrUserIP[i] == json.ip) {
